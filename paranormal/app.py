@@ -14,7 +14,7 @@ from flask import (
     request,
     redirect)
 
-engine = create_engine("sqlite:///data/movies.db")
+engine = create_engine("sqlite:///data/paranormal_activity.db")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -24,8 +24,7 @@ Base.prepare(engine, reflect=True)
 # Save reference to the table
 print(Base.classes.keys())
 
-Movies = Base.classes.movies
-Actors = Base.classes.actors
+paranormal_activity = Base.classes.paranormal
 
 #################################################
 # Flask Setup
@@ -39,96 +38,70 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-@app.route("/data")
-def data():
-
-    return render_template("data.html")
-
 @app.route("/analysis")
-def actors():
+def dataAnalysis():
     return render_template("analysis.html")
 
-@app.route("/model" , methods=["POST"])
-def model():
-
-    rooms = float(request.form["rooms"])
-    bedrooms = float(request.form["bedrooms"])
-
-    income = request.form["income"]
-    if income == "":
-        income = 68000
-    income = float(income)
-
-    age = request.form["age"]
-    if age == "":
-        age = 6
-    age = float(age)
-
-    population = request.form["population"]
-    if population == "":
-        population = 36000
-
-    prediction = 0
-
-    X = [[income, age, rooms, bedrooms, population]]
-
-    print(X)
-
-    filename = './data/housing.sav'
-    loaded_model = pickle.load(open(filename, 'rb'))
-
-    prediction = loaded_model.predict(X)[0][0]
-
-    prediction = "${0:,.2f}".format(prediction)
-
-    print(prediction)
-
-    return render_template("analysis.html", prediction = prediction)
-
+@app.route("/data")
+def data():
+    return render_template("data.html")
 # ---------------------------------------------------------
 # API
-@app.route("/api/movies")
-def movie_grid():
+#@app.route("/api/movies")
+#def movie_grid():
 
+#    session = Session(engine)
+
+#    results = session.query(Movies.title, Movies.director, Movies.year, Movies.rating, Movies.imdb_votes, Movies.imdb_score).all()
+
+#    results = [list(r) for r in results]
+
+#    table_results = {
+#        "table": results
+#    }
+
+#    session.close()
+
+#    return jsonify(table_results)
+
+@app.route("/api/paranormal/<country>")
+def paranormal_byCountry(country):
     session = Session(engine)
-
-    results = session.query(Movies.title, Movies.director, Movies.year, Movies.rating, Movies.imdb_votes, Movies.imdb_score).all()
-
-    results = [list(r) for r in results]
-
-    table_results = {
-        "table": results
-    }
-
+    results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.type, paranormal_activity.latitude, paranormal_activity.longitude).filter(paranormal_activity.country == country).limit(50).all()
+    #print(results)
     session.close()
 
-    return jsonify(table_results)
+    pactivity_byCountry = []
+    for description, city, state, type, latitude, longitude in results:
+        new_dict = {}
+        print(city)
+        #print(type)
+        #print(latitude)
+        #print(longitude)
+        #new_dict["Title"] = description
 
-@app.route("/api/years/<year>")
-def years(year):
+        #new_dict["Type"] = type
+        #new_dict["Latitude"] = latitude
+        #new_dict["Longitude"] = longitude
+        pactivity_byCountry.append(new_dict)
+    return jsonify(pactivity_byCountry)
 
+@app.route("/api/paranormal/<type>")
+def paranormal_byType(activity_type):
     session = Session(engine)
-
-    if year == "before":
-        results = session.query(Movies.title, Movies.director, Movies.year, 
-            Movies.rating, Movies.imdb_votes, Movies.imdb_score).filter(Movies.year < 2000).all()
-    else:
-        results = session.query(Movies.title, Movies.director, Movies.year, 
-            Movies.rating, Movies.imdb_votes, Movies.imdb_score).filter(Movies.year >= 2000).all()
-
-    results = [list(r) for r in results]
-
-    rating = [result[3] for result in results]
-    votes = [result[4] for result in results]
-
-    year_results = {
-        "rating": rating,
-        "votes": votes,
-    }
+    results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.country, paranormal_activity.date, paranormal_activity.latitude, paranormal_activity.longitude,
+    paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == activity_type).all()
 
     session.close()
-
-    return jsonify(year_results)
+    pactivity_byType = []
+    for description, type, latitude, longitude in results:
+        new_dict = {}
+        new_dict["Title"] = description
+        new_dict["Type"] = type
+        new_dict["Latitude"] = latitude
+        new_dict["Longitude"] = longitude
+        pactivity_byType.append(new_dict)
+    return jsonify(pactivity_byType)
 
 
 @app.route("/api/directors/<director>")
@@ -166,4 +139,4 @@ def directors(director):
     return jsonify(director_results)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
