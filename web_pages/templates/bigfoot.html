@@ -48,27 +48,182 @@
                 </div>
             </div>
         </nav>
+        
         <!-- Masthead-->
-        <header class="masthead">
-            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-                <div class="d-flex justify-content-center">
-                    <div class="text-center">
-                        <h1 class="mx-auto my-0 text-uppercase">Big Foot</h1>
-                        <h2 class="text-white-50 mx-auto mt-2 mb-5">It looks like if you live in  Washington State Ohio or California - you are either very blessed with special being visits more than any other state.
-                            Big foot, can be characterized as a very large, hairy, humanoid creature reputed to inhabit wilderness areas of the U.S. and Canada, especially the Pacific Northwest. <br> Scroll down for more ...bigfoot
-                        </h2>
+        <!-- <header class="masthead"> -->
+            <!-- <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center"> -->
+                <!-- <div class="d-flex justify-content-center"> -->
+                    <!-- <div class="text-center"> -->
+                        <!-- <h1 class="mx-auto my-0 text-uppercase">amazing places</h1> -->
+                        <!-- <h2 class="text-white-50 mx-auto mt-2 mb-5">places that are considered to have aura kind of feeling. <br> Scroll down for more ... -->
+                        <!-- </h2> -->
                         <!-- <a class="btn btn-primary" href="#about">Get Started</a> -->
                     </div>
-                    <div class="row">
-                        <div class="column">
+
+                    <!-- new gallery code -->
+             <section class="about-section text-center" id="about">
+                     <div class="container px-4 px-lg-">
+                        <div class="row gx-4 gx-lg-5 ju5stify-content-center">
+                             <div class="col-lg-8">
+
+                    <h2 class="text-white mb-4">Big Foot Sighting </h2>
+                    <h5 class="text-white-50 mx-auto mt-2 mb-5">The legends of Bigfoot go back beyond recorded history and cover the world. In North America – and particularly the Northwest – you can hear tales of seven-foot-tall hairy men stalking the woods, occasionally scaring campers, lumberjacks, hikers and the like.Those who claim to have seen Bigfoot have described everything from a large, upright ape to an actual hairy human, sometimes standing over eight feet tall and described as powerfully built. The debate and research continue...
+                    </h2>
+                </div>
+            </div>
+            <!-- <img class="img-fluid" src="assets/img/hauntedfm8.jpg" alt="..." /> -->
+        </div>
+        <!-- photo gallery code beginning -->
+        <title>Image Gallery</title>
+        <meta name="description" content="Responsive Image Gallery">
+        <meta name="author" content="">
+
+        <style type="text/css">
+
+        #darkbox { width:1280px; height:720px; position:absolute;
+            top:0; left:0; background-color:#333; overflow: hidden; text-align:center;
+        }
+        .darkboximg { padding:5%; max-width: 1216px; max-height: 684px; }
+
+        #gallery {
+            line-height:0;
+            -webkit-column-count:5;
+            -webkit-column-gap:5px;
+            -moz-column-count:5;
+            -moz-column-gap:5px;
+            column-count:5;
+            column-gap:5px;
+            margin-top:2rem;
+        }
+
+        #gallery img {
+            width: 100% !important;
+            height: auto !important;
+            margin-bottom:5px;
+            filter: grayscale(100%);
+            transition: filter 2s;
+        }
+
+        #gallery img:hover {
+            filter:none;
+        }
+
+        @media (max-width: 1200px) {
+            #gallery {
+                -moz-column-count:    4;
+                -webkit-column-count: 4;
+                column-count:         4;
+            }
+        }
+        @media (max-width: 1000px) {
+            #gallery {
+                -moz-column-count:    3;
+                -webkit-column-count: 3;
+                column-count:         3;
+            }
+        }
+        @media (max-width: 800px) {
+            #gallery {
+                -moz-column-count:    2;
+                -webkit-column-count: 2;
+                column-count:         2;
+            }
+        }
+        @media (max-width: 400px) {
+            #gallery {
+                -moz-column-count:    1;
+                -webkit-column-count: 1;
+                column-count:         1;
+            }
+        }
+
+        </style>
+    </head>
+    <body>
+
+        <div id="gallery">
+<!-- images from "https://www.ranker.com/list/best-pictures-of-bigfoot/roger-nackerman" -->
+            <!-- data from https://twistedsifter.com/2014/02/50-amazing-finds-on-google-earth/ -->
+            <img src="../static/img/Amazing/bigfoot/silver-star-mountain-photo-u1.jfif">
+            <img src="../static/img/Amazing/bigfoot/1996-video-snapshot-photo-u1.jfif">
+            <img src="../static/img/Amazing/bigfoot/pennsylvania-bigfoot-photo-u1.jfif">
+            <img src="../static/img/Amazing/bigfoot/juvenile-sasquatch-photo-u1.jfif">
+            <img src="../static/img/Amazing/bigfoot/big_05.jpg">
+            <img src="../static/img/Amazing/bigfoot/big_04.jpg">
+            <img src="../static/img/Amazing/bigfoot/big_03.jpg">
+            <img src="../static/img/Amazing/bigfoot/big_02.jpeg">
+            <img src="../static/img/Amazing/bigfoot/big_01.jpg">
+
+            
+            
+        <script>
+        let darkBoxVisible = false;
+
+        window.addEventListener('load', (event) => {
+            let images = document.querySelectorAll("img");
+            if(images !== null && images !== undefined && images.length > 0) {
+                images.forEach(function(img) {
+                    img.addEventListener('click', (evt) => {
+                        showDarkbox(img.src);
+                    });
+                });
+            }
+        });
+
+        function showDarkbox(url) {
+            if(!darkBoxVisible) {
+                let x = (window.innerWidth - 1280) / 2;
+                let y = window.scrollY + 50;
+
+                // Create the darkBox
+                var div = document.createElement("div");
+                div.id = "darkbox";
+                div.innerHTML = '<img class="darkboximg" src="'+url+'" />';
+                document.body.appendChild(div);
+                let box = document.getElementById("darkbox");
+                box.style.left = x.toString()+"px";
+                box.style.top = y.toString()+"px";
+                box.style.height = 'auto';
+                box.addEventListener('click', (event) => {
+                    // Remove it
+                    let element = document.getElementById("darkbox");
+                    element.parentNode.removeChild(element);
+
+                    darkBoxVisible = false;
+                })
+
+                darkBoxVisible = true;
+
+            } else {
+                // Remove it
+                let element = document.getElementById("darkbox");
+                element.parentNode.removeChild(element);
+
+                darkBoxVisible = false;
+            }
+        }
+        </script>
+        </div>
+        <!-- music code -->
+   <!-- Music attributes https://elements.envato.com/audio/royalty-free-music/mood-dark/pg-2 -->
+               <!-- <audio controls autoplay> -->
+                   <!-- <<iframe src="silence.mp3" allow="autoplay" id="audio"></iframe> -->
+                   <iframe
+                   src="../static/img/audio/Epic War Trailer.wav" type="audio/mpeg">
+               </iframe>
+                   <!-- </audio> -->
+
+        <!-- end new gallery code  -->
+                    <!-- <div class="row"> -->
+                        <!-- <div class="column"> -->
                             <!-- <a class="btn btn-primary" href="ufo.html">Where is this Amazing Place?</a>  -->
-                            <img src="../static/img/Amazing/bigfoot/big_05.jpg" width= 300px height="50%">
+                            <!-- <img src="../static/img/Amazing/crop/bigstock-Cathedral-Rock-in-Sedona-Ariz-13616861.jpg" width= 300px height="50%"> -->
                             <!-- <a class="btn btn-primary" href="ufo.html">Have you Spotted my Foot?</a> -->
-                            <img src="../static/img/hauntedfm14.jpg" width= 300px height="50%">
+                            <!-- <img src="../static/img/Amazing/crop/crop-circles-united-kingdom01.adapt_.1900.1-1536x1023.jpg" width= 300px height="50%"> -->
                             <!-- <a class="btn btn-primary" href="ufo.html">Are you scared in there?</a> -->
-                            <img src="../static/img/Amazing/bigfoot/big_01.jpg" width= 300px height="50%">
+                            <!-- <img src="../static/img/Amazing/crop/crop_03.jpg" width= 300px height="50%"> -->
                             <!-- <a class="btn btn-primary" href="ufo.html">Are we Alone?</a>  -->
-                          <img src="../static/img/Amazing/bigfoot/big_02.jpeg" width= 300px height="50%">
+                          <!-- <img src="../static/img/Amazing/bermuda/tri_01.jpg" width= 300px height="50%"> -->
                           <!-- <a class="btn btn-primary" href="bigfoot.html">Have you spotted my foot?</a>  -->
                           <!-- <img src="./assets/img/bigfoot200.webp" width= 300px height="80%"> -->
                           <!-- <a class="btn btn-primary" href="bigfoot.html">Have you spotted my foot?</a>  -->
@@ -86,13 +241,13 @@
                           <img src="wedding.jpg">
                           <img src="rocks.jpg">
                            -->
-                        </div>
+                        <!-- </div> -->
     
                 </div>
             </div>
         </header>
         
-         <!-- Footer-->
+        <!-- Footer-->
         <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Your Website 2022</div></footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
