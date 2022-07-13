@@ -21,7 +21,8 @@ function createMap(paEvents){
     }
     // Create the map object with options.
     map = L.map("map-id", {
-        center: [39.13080446469668, -94.74259079416709],
+        //center: [39.13080446469668, -94.74259079416709],
+        center: [40.730610, -73.935242],
         zoom: 3,
         layers: [streetmap, paEvents]
     });
@@ -39,16 +40,27 @@ function createMarkers(paType){
         var allActivity = data;
 
         // Initialize an array to hold bike markers.
-        var paMarkers = [];
+        var paMarkers = [];        
 
         // Loop through the stations array.
         for (var index = 0; index < allActivity.length; index++) {
             var activity = allActivity[index];
 
-            // For each station, create a marker, and bind a popup with the station's name.
-            var paMarker = L.marker([activity.Latitude, activity.Longitude])
-                .bindPopup("<h3>" + activity.Title);
+            var selectColor = activity.Type == 'Amazing' ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png' : activity.Type == 'Big foot' 
+                ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png' : activity.Type == 'Haunted' ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'
+                : 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'
+            var selectedIcon = new L.Icon({
+                iconUrl: `${selectColor}`,
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              });
 
+            // For each station, create a marker, and bind a popup with the station's name.
+            var paMarker = L.marker([activity.Latitude, activity.Longitude], {icon: selectedIcon})
+                .bindPopup(activity.Type + "<br>" + activity.Title + "<br>" + (activity.City ? activity.City : '') + "<br>" + (activity.State ? activity.State : ''));
             // Add the marker to the bikeMarkers array.
             paMarkers.push(paMarker);
         }
@@ -59,18 +71,13 @@ function createMarkers(paType){
 }
       ////////////////////
   
-function buildDirectorChart(director){
-  
-    console.log(director);
-  
-    d3.json(`api/directors/${director}`).then((data) => {
-  
-      console.log(data)
+function buildBarChart(){
+    d3.json(`/api/paranormal/totals`).then((data) => {
     
       var trace1 = {
         type: 'bar',
-        x: data['labels'],
-        y: data['scores'],
+        x: data['Labels'],
+        y: data['Totals'],
         marker: {
             color: '#C8A2C8',
         }
@@ -79,7 +86,7 @@ function buildDirectorChart(director){
       var data = [ trace1 ];
       
       var layout = { 
-        title: 'Directors',
+        title: 'Paranormal Activity',
       };
       
       var config = {responsive: true}
@@ -88,15 +95,33 @@ function buildDirectorChart(director){
     
     })
 }
-  
+ 
+function buildPieChart(){
+    d3.json(`/api/paranormal/totals`).then((data) => {
+
+    var data = [{
+        values: data['Totals'],
+        labels: data['Labels'],
+        type: 'pie'
+      }];
+      
+      var layout = {
+        height: 400,
+        width: 500
+      };
+      
+      Plotly.newPlot('pie', data, layout);
+   
+    })
+}
+
   
 function optionTypeChanged(newType){
     createMarkers(newType);
 }
   
-createMarkers("Amazing")
-  
-//buildDirectorChart("chaplin")
-  
+createMarkers("All")
+buildBarChart()
+buildPieChart()  
   
   

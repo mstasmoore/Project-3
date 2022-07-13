@@ -11721,3 +11721,7 @@ body,
   height: 1000px!important;
   width: 100%;
 }
+
+.centerItem{
+  margin-left:  40%;
+}

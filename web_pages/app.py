@@ -56,27 +56,10 @@ def haunted():
 def ufo():
     return render_template("ufo.html")
 
-#@app.route("/assets/img/")
-#def ufo():
-#    return 
-# ---------------------------------------------------------
+@app.route("/graphs")
+def graphs():
+    return render_template("graphs.html")
 # API
-#@app.route("/api/movies")
-#def movie_grid():
-
-#    session = Session(engine)
-
-#    results = session.query(Movies.title, Movies.director, Movies.year, Movies.rating, Movies.imdb_votes, Movies.imdb_score).all()
-
-#    results = [list(r) for r in results]
-
-#    table_results = {
-#        "table": results
-#    }
-
-#    session.close()
-
-#    return jsonify(table_results)
 
 @app.route("/api/paranormal/country/<country>")
 def paranormal_byCountry(country):
@@ -102,28 +85,66 @@ def paranormal_byCountry(country):
 
 @app.route("/api/paranormal/activityType/<activity_type>")
 def paranormal_byType(activity_type):
-    print('Here')
+    
     session = Session(engine)
-    results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
+    
+    pactivity_byType = [] 
+    if activity_type != 'All':
+        results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
               paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == activity_type).limit(500).all()
+        addRecords(results, pactivity_byType)
+    else:
+        results1 = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
+              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == 'Amazing').limit(500).all()
+        addRecords(results1, pactivity_byType)
+        results2 = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
+              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == 'Big foot').limit(500).all()
+        addRecords(results2, pactivity_byType)
+        results3 = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
+              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == 'Haunted').limit(500).all()
+        addRecords(results3, pactivity_byType)
+        results4 = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
+              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == 'UFO').limit(500).all()
+        addRecords(results4, pactivity_byType)
 
-    print(activity_type)
-    print(results)
     session.close()
-    pactivity_byType = []
-    for description, city, state, country, latitude, longitude, encounter_seconds, season in results:
+   
+    return jsonify(pactivity_byType)
+
+def addRecords(results, resultsDictionary):
+    for description, city, state, type, country, latitude, longitude, encounter_seconds, season in results:
         new_dict = {}
         new_dict["Title"] = description
         new_dict["City"] = city
         new_dict["State"] = state
+        new_dict["Type"] = type
         new_dict["Country"] = country
         new_dict["Latitude"] = latitude
         new_dict["Longitude"] = longitude
         new_dict["Seconds"] = encounter_seconds
         new_dict["Season"] = season
-        pactivity_byType.append(new_dict)
-    return jsonify(pactivity_byType)
+        resultsDictionary.append(new_dict)
+    return resultsDictionary
 
+@app.route("/api/paranormal/totals")
+def paranormal_Totals():
+    session = Session(engine)
+    results = session.query(paranormal_activity.type, func.count(paranormal_activity.id)).group_by(paranormal_activity.type).all()
+    print(results)
+    session.close()
+
+    pactivityLabels = []
+    pactivityTotals = []
+    for type, count in results:
+        pactivityLabels.append(type)
+        pactivityTotals.append(count)
+
+    paranormal_results = {
+        "Labels": pactivityLabels,
+        "Totals": pactivityTotals,
+    }
+
+    return jsonify(paranormal_results)
 
 if __name__ == "__main__":
     app.run(debug=True)
