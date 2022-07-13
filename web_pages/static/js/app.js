@@ -26,12 +26,44 @@ function createMap(paEvents){
         zoom: 3,
         layers: [streetmap, paEvents]
     });
-       
+     // Set up the Definition legend
+
+     let legend = L.control({ position: "bottomright" });
+     legend.onAdd = function() {
+         let div = L.DomUtil.create("div", "info legend");
+         let types = ['Amazing', 'Big foot', 'Haunted', 'UFO'];
+         let labels = [];
+         let legendInfo = "<h7>Paranormal Activity Type</h7>";
+         div.innerHTML = legendInfo;
+         for (var i = 0; i < types.length; i++) {
+             labels.push('<li style="background-color:' + getColor(types[i]) + '"> <span>' + types[i] + '</span></li>');
+         }
+         div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+         return div;
+     };
+
+     // Adding legend to myMap
+    legend.addTo(map);
+
     // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(map);
 }
+
+// Define a color based on the magnitude of earthquake
+const getColor = ((type)=>  {
+    switch (type) {
+        case ('Amazing'):
+            return "#20ab1c";
+        case ('Big foot'):
+            return "#9a26ca";
+        case ('Haunted'):
+            return "#b6384d";
+        default:
+            return "#ffd326";
+    }
+});
 
 function createMarkers(paType){
 
