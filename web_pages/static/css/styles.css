@@ -11713,7 +11713,11 @@ body,
 }
 
 .map{
-  height: 200%;
-  width: 1300px;
+  min-height: 1000px;
+  
+}
 
+.mapid{
+  height: 1000px!important;
+  width: 100%;
 }

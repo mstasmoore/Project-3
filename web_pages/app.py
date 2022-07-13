@@ -105,7 +105,7 @@ def paranormal_byType(activity_type):
     print('Here')
     session = Session(engine)
     results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude,\
-              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == activity_type).all()
+              paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.type == activity_type).limit(500).all()
 
     print(activity_type)
     print(results)

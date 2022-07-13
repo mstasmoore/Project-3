@@ -1,5 +1,6 @@
- 
-const createMap = ((paEvents) => {
+var map = null;
+
+function createMap(paEvents){
   
     // Create the tile layer that will be the background of our map.
     var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -15,11 +16,13 @@ const createMap = ((paEvents) => {
     var overlayMaps = {
         "Paranormal Activity": paEvents
     };
-
+    if (map != undefined){
+        map.remove();
+    }
     // Create the map object with options.
-    var map = L.map("map-id", {
-        center: [40.73, -74.0059],
-        zoom: 7,
+    map = L.map("map-id", {
+        center: [39.13080446469668, -94.74259079416709],
+        zoom: 3,
         layers: [streetmap, paEvents]
     });
        
@@ -27,9 +30,9 @@ const createMap = ((paEvents) => {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(map);
-})
+}
 
-const createMarkers = ((paType) => {
+function createMarkers(paType){
 
     d3.json(`/api/paranormal/activityType/${paType}`).then((data) => {
         // Pull the "stations" property from response.data.
@@ -53,10 +56,10 @@ const createMarkers = ((paType) => {
         // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
         createMap(L.layerGroup(paMarkers));
     })
-})
+}
       ////////////////////
   
-const buildDirectorChart = ((director) => {
+function buildDirectorChart(director){
   
     console.log(director);
   
@@ -84,12 +87,12 @@ const buildDirectorChart = ((director) => {
       Plotly.newPlot('v-bar', data, layout, config );
     
     })
-})
+}
   
   
-const optionTypeChanged = ((newType) => {
+function optionTypeChanged(newType){
     createMarkers(newType);
-})
+}
   
 createMarkers("Amazing")
   
