@@ -48,17 +48,17 @@
             </div>
         </nav>
         <!-- Masthead-->
-        <header class="masthead">
-            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <!-- <header class="masthead"> -->
+            <!-- <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
                     <div class="text-center">
                         <h1 class="mx-auto my-0 text-uppercase">UFO Sighting</h1>
                         <h2 class="text-white-50 mx-auto mt-2 mb-5">Unidentified Flying Object: any unexplained moving object observed in the sky, especially one assumed by some observers to be of extraterrestrial origin.</h2>
-                        <!-- <a class="btn btn-primary" href="#about">Get Started</a> -->
+                        <a class="btn btn-primary" href="#about">Get Started</a>
                     </div>
                 </div>
-            </div>
-        </header>
+            </div> -->
+        <!-- </header> -->
         <!-- About-->
         <section class="about-section text-center" id="about">
             <div class="container px-4 px-lg-5">
@@ -71,8 +71,153 @@
                         </h2>
                     </div>
                 </div>
-                <img class="img-fluid" src="assets/img/hauntedfm8.jpg" alt="..." />
+                <!-- <img class="img-fluid" src="assets/img/hauntedfm8.jpg" alt="..." /> -->
             </div>
+            <title>Image Gallery</title>
+            <meta name="description" content="Responsive Image Gallery">
+            <meta name="author" content="">
+    
+            <style type="text/css">
+    
+            #darkbox { width:1280px; height:720px; position:absolute;
+                top:0; left:0; background-color:#333; overflow: hidden; text-align:center;
+            }
+            .darkboximg { padding:5%; max-width: 1216px; max-height: 684px; }
+    
+            #gallery {
+                line-height:0;
+                -webkit-column-count:5;
+                -webkit-column-gap:5px;
+                -moz-column-count:5;
+                -moz-column-gap:5px;
+                column-count:5;
+                column-gap:5px;
+                margin-top:2rem;
+            }
+    
+            #gallery img {
+                width: 100% !important;
+                height: auto !important;
+                margin-bottom:5px;
+                filter: grayscale(100%);
+                transition: filter 2s;
+            }
+    
+            #gallery img:hover {
+                filter:none;
+            }
+    
+            @media (max-width: 1200px) {
+                #gallery {
+                    -moz-column-count:    4;
+                    -webkit-column-count: 4;
+                    column-count:         4;
+                }
+            }
+            @media (max-width: 1000px) {
+                #gallery {
+                    -moz-column-count:    3;
+                    -webkit-column-count: 3;
+                    column-count:         3;
+                }
+            }
+            @media (max-width: 800px) {
+                #gallery {
+                    -moz-column-count:    2;
+                    -webkit-column-count: 2;
+                    column-count:         2;
+                }
+            }
+            @media (max-width: 400px) {
+                #gallery {
+                    -moz-column-count:    1;
+                    -webkit-column-count: 1;
+                    column-count:         1;
+                }
+            }
+    
+            </style>
+        </head>
+        <body>
+    
+            <div id="gallery">
+    
+                <img src="../static/img/Amazing/ufo/citrus-heights-1.jpg">
+                <img src="../static/img/Amazing/ufo/mars-spacecraft.jpg">
+                <img src="../static/img/Amazing/ufo/northeastufo.jpg">
+                <img src="../static/img/Amazing/ufo/orlandoflorida012414a.jpg">
+                <img src="../static/img/Amazing/ufo/romeamman.jpg">
+                <img src="../static/img/Amazing/ufo/salem1952.jpg">
+                <img src="../static/img/Amazing/ufo/southportufo.jpg">
+                <img src="../static/img/Amazing/ufo/ufo-captured-on-photograph-nashville-tennessee4.jpg">
+                <img src="../static/img/Amazing/ufo/washingtondc1952.jpg">
+                <img src="../static/img/Amazing/ufo/washougal-1.jfif">
+                <img src="../static/img/Amazing/ufo/ufo_06.jpg">
+                <img src="../static/img/Amazing/ufo/ufo_05.jpg">
+                
+            <script>
+            let darkBoxVisible = false;
+    
+            window.addEventListener('load', (event) => {
+                let images = document.querySelectorAll("img");
+                if(images !== null && images !== undefined && images.length > 0) {
+                    images.forEach(function(img) {
+                        img.addEventListener('click', (evt) => {
+                            showDarkbox(img.src);
+                        });
+                    });
+                }
+            });
+    
+            function showDarkbox(url) {
+                if(!darkBoxVisible) {
+                    let x = (window.innerWidth - 1280) / 2;
+                    let y = window.scrollY + 50;
+    
+                    // Create the darkBox
+                    var div = document.createElement("div");
+                    div.id = "darkbox";
+                    div.innerHTML = '<img class="darkboximg" src="'+url+'" />';
+                    document.body.appendChild(div);
+                    let box = document.getElementById("darkbox");
+                    box.style.left = x.toString()+"px";
+                    box.style.top = y.toString()+"px";
+                    box.style.height = 'auto';
+                    box.addEventListener('click', (event) => {
+                        // Remove it
+                        let element = document.getElementById("darkbox");
+                        element.parentNode.removeChild(element);
+    
+                        darkBoxVisible = false;
+                    })
+    
+                    darkBoxVisible = true;
+    
+                } else {
+                    // Remove it
+                    let element = document.getElementById("darkbox");
+                    element.parentNode.removeChild(element);
+    
+                    darkBoxVisible = false;
+                }
+            }
+            </script>
+            </div>
+        </div>
+    </div> 
+    
+            <!-- gallery code-ending -->
+       </section>
+   
+       <!-- music code -->
+   
+               <!-- <audio controls autoplay> -->
+                   <!-- <<iframe src="silence.mp3" allow="autoplay" id="audio"></iframe> -->
+                    <iframe
+                   src="../static/img/audio/Sci-Fi Dystopia.mp3" type="audio/mpeg">
+               </iframe>
+                   <!-- </audio> -->
+     
         </section>
     
         <!-- Footer-->
