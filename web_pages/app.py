@@ -61,27 +61,17 @@ def graphs():
     return render_template("graphs.html")
 # API
 
-@app.route("/api/paranormal/country/<country>")
-def paranormal_byCountry(country):
+@app.route("/api/paranormal/activityType/table/<activity_type>")
+def paranormal_byType_table(activity_type):
     session = Session(engine)
-    results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.type, paranormal_activity.latitude, paranormal_activity.longitude, \
-            paranormal_activity.encounter_seconds, paranormal_activity.season).filter(paranormal_activity.country == country).all()
-    #print(results)
+    results = session.query(paranormal_activity.description, paranormal_activity.city, paranormal_activity.state, paranormal_activity.country, paranormal_activity.latitude, paranormal_activity.longitude, \
+            paranormal_activity.encounter_seconds, paranormal_activity.season, paranormal_activity.image).filter(paranormal_activity.type == activity_type).limit(500).all() 
+    results = [list(r) for r in results]
+    table_results = {
+        "table": results
+    }
     session.close()
-
-    pactivity_byCountry = []
-    for description, city, state, type, latitude, longitude, encounter_seconds, season in results:
-        new_dict = {}
-        new_dict["Title"] = description
-        new_dict["City"] = city
-        new_dict["State"] = state
-        new_dict["Type"] = type
-        new_dict["Latitude"] = latitude
-        new_dict["Longitude"] = longitude
-        new_dict["Seconds"] = encounter_seconds
-        new_dict["Season"] = season
-        pactivity_byCountry.append(new_dict)
-    return jsonify(pactivity_byCountry)
+    return jsonify(table_results)
 
 @app.route("/api/paranormal/activityType/<activity_type>")
 def paranormal_byType(activity_type):
@@ -145,6 +135,6 @@ def paranormal_Totals():
     }
 
     return jsonify(paranormal_results)
-
+    
 if __name__ == "__main__":
     app.run(debug=True)

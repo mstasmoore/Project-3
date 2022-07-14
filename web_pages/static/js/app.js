@@ -68,13 +68,13 @@ const getColor = ((type)=>  {
 function createMarkers(paType){
 
     d3.json(`/api/paranormal/activityType/${paType}`).then((data) => {
-        // Pull the "stations" property from response.data.
+       
         var allActivity = data;
 
-        // Initialize an array to hold bike markers.
+       
         var paMarkers = [];        
 
-        // Loop through the stations array.
+       
         for (var index = 0; index < allActivity.length; index++) {
             var activity = allActivity[index];
 
@@ -90,14 +90,14 @@ function createMarkers(paType){
                 shadowSize: [41, 41]
               });
 
-            // For each station, create a marker, and bind a popup with the station's name.
+            // For each type, create a marker, and bind a popup with the type's name.
             var paMarker = L.marker([activity.Latitude, activity.Longitude], {icon: selectedIcon})
                 .bindPopup(activity.Type + "<br>" + activity.Title + "<br>" + (activity.City ? activity.City : '') + "<br>" + (activity.State ? activity.State : ''));
             // Add the marker to the bikeMarkers array.
             paMarkers.push(paMarker);
         }
 
-        // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
+        // Create a layer group that's made from the type array, and pass it to the createMap function.
         createMap(L.layerGroup(paMarkers));
     })
 }
@@ -151,9 +151,36 @@ function buildPieChart(){
 function optionTypeChanged(newType){
     createMarkers(newType);
 }
-  
-createMarkers("All")
+ 
+function optionTypeTableChanged(newType){
+    buildTable(newType);
+}
+
+function buildTable(paType){
+    d3.json(`/api/paranormal/activityType/table/${paType}`).then((data) => {
+        //if ($('#dataTable').DataTable != undefined){
+        //    $('#dataTable').DataTable.destroy();
+        //}
+        $('#dataTable').DataTable( {
+            destroy: true,
+            data: data['table'],
+            columns: [
+                { title: "Title" },
+                { title: "City" },
+                { title: "State" },
+                { title: "Country" },
+                { title: "Latitude" },
+                { title: "Longitude" },
+                { title: "Duration" },
+                { title: "Season" },
+                { title: "Image" }
+            ]
+        });
+    });
+}
+
+createMarkers('All')
 buildBarChart()
 buildPieChart()  
-  
+buildTable('Amazing')
   

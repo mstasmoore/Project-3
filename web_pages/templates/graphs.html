@@ -55,6 +55,21 @@
         </section>
         <div id="v-bar"></div>
         <div class="centerItem" id="pie"></div>
+        <div class="centerTable">
+            <div class="col-md-6">
+                <label class="white-text" for="types">Paranormal Activity Type:</label>
+                <br>
+                <select name="paType" id="paType" onchange="optionTypeTableChanged(this.value)">
+                    <option value="Amazing">Amazing Places</option>
+                    <option value="Big foot">BigFoot Sightings</option>
+                    <option value="Haunted">Haunted Places</option>
+                    <option value="UFO">UFO Sightings</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <table id="dataTable" class="display" width="100%"></table>    
+            </div>
+        </div>
         <!-- Footer-->
         <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Your Website 2022</div></footer>
         <!-- Bootstrap core JS-->
@@ -65,6 +80,10 @@
         <script type="text/javascript" src="../static/js/app.js"></script>
         <!-- Core theme JS-->
         <script src="../static/js/scripts.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        <script src="https:////cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
